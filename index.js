@@ -60,7 +60,12 @@ module.exports = function(type, options) {
     });
 
     var contents = file.contents.toString();
-    var name = path.basename(file.path, path.extname(file.path));
+    var name;
+    var ext = path.extname(file.path);
+    if (_.isString(opts.root))
+      name = path.relative(opts.root, file.path).slice(0, -ext.length);
+    else
+      name = path.basename(file.path, ext);
     if (opts.wrapper) {
       var context = {
         name: name,
